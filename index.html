@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bear Hunter Game</title>
+    <style>
+        #timer {
+            font-size: 50px;
+            font-family: Arial, sans-serif;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="timer"></div>
+    <div id="result"></div>
+    <div id="u-picked"></div>
+    <div id="c-picked"></div>
+
+    <script>
+        let username = prompt('Welcome to Bear Hunter. Please type your name');
+        const choices = ['bear', 'ninja', 'hunter'];
+
+        let player = `${username}`;
+        // Print out welcome text
+        alert('Hi ' + player + ' Let\'s Play!!');
+
+        function playGame() {
+            // Prompt the player for input
+            let choose = prompt('Who are you: Bear, Ninja or Hunter?').toLowerCase();
+
+            // Validate the player's choice
+            if (!choices.includes(choose)) {
+                alert("Invalid choice! Please enter one of the following: bear, ninja, hunter.");
+                return;
+            }
+
+            console.log(player + ", You picked " + choose + "!");
+            console.log("The computer picked Bear!");
+
+            let cpuChoice = Math.floor(Math.random() * 3);
+            let computer = choices[cpuChoice];
+
+            let result = "";
+
+            if (choose === computer) {
+                result = "tie";
+            } else if (
+                (choose === "bear" && computer === "ninja") ||
+                (choose === "ninja" && computer === "hunter") ||
+                (choose === "hunter" && computer === "bear")
+            ) {
+                result = "user";
+            } else {
+                result = "computer";
+            }
+
+            let countdown = 3;
+            const timerElement = document.getElementById('timer');
+            const interval = setInterval(function () {
+                timerElement.textContent = countdown;
+                countdown--;
+
+                if (countdown < 0) {
+                    clearInterval(interval);
+                    timerElement.textContent = 'Time\'s up!';
+
+
+                    document.getElementById("u-picked").innerHTML = player + ", You picked " + choose + "!";
+                    document.getElementById("c-picked").innerHTML = `The Computer Picked ${computer}`;
+
+                    switch (result) {
+                        case "tie":
+                            console.log("Tie!!");
+                            document.getElementById("result").innerHTML = "Tie!!";
+                            break;
+                        case "user":
+                            console.log("You win!!");
+                            document.getElementById("result").innerHTML = "You win!!";
+                            break;
+                        case "computer":
+                            console.log("Computer wins!!");
+                            document.getElementById("result").innerHTML = "Computer Wins!!";
+                            break;
+                        default:
+                            console.log("Something went wrong");
+                            document.getElementById("result").innerHTML = "Something went wrong";
+                            break;
+                    }
+
+
+                    setTimeout(function () {
+                        const playAgain = confirm("Do you want to play again?");
+                        if (playAgain) {
+                            playGame();
+                        } else {
+                            alert("Game over! Thanks for playing!");
+                        }
+                    }, 1000);
+                }
+            }, 1000);
+        }
+
+        playGame();
+
+    </script>
+
+</body>
+
+</html>
